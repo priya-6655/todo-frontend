@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './MainPage.css'
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || 'https://todo-backend-beta-two.vercel.app';
 
 function MainPage() {
     const [menuOpen, setMenuOpen] = useState(false)
