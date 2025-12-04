@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import './MainPage.css'
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function MainPage() {
     const [menuOpen, setMenuOpen] = useState(false)
     const [todo, setTodo] = useState({ todoText: '' })
@@ -23,7 +25,7 @@ function MainPage() {
         try {
 
             if (editIndex) {
-                const res = await fetch('http://localhost:3000/todo/edit', {
+                const res = await fetch(`${API_URL}/todo/edit`, {
                     method: "PUT",
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ id: editIndex, todoText: todo.todoText })
@@ -36,7 +38,7 @@ function MainPage() {
                     setEditIndex(null)
                 }
             } else {
-                const res = await fetch('http://localhost:3000/todo/addtodo', {
+                const res = await fetch(`${API_URL}/todo/addtodo`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(todo)
@@ -60,7 +62,7 @@ function MainPage() {
     const viewTodo = async () => {
         setMenuOpen(false)
         try {
-            const res = await fetch('http://localhost:3000/todo/viewtodo')
+            const res = await fetch(`${API_URL}/todo/viewtodo`)
             const out = await res.json()
 
             if (out.success) {
@@ -81,7 +83,7 @@ function MainPage() {
         const todoItem = updatedList[index]
 
         try {
-            await fetch('http://localhost:3000/todo/completed', {
+            await fetch(`${API_URL}/todo/completed`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id: todoItem.id, completed: todoItem.completed })
@@ -100,7 +102,7 @@ function MainPage() {
 
     const deleteTodoList = async (id) => {
         try {
-            const res = await fetch(`http://localhost:3000/todo/delete/${id}`, {
+            const res = await fetch(`${API_URL}/todo/delete/${id}`, {
                 method: 'DELETE'
             })
 
