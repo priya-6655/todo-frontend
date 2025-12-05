@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import LandingPage from '../LandingPage/LandingPage'
 import Login from '../LoginAndReg/Login'
-import Bridge from '../ConnectingPage/bridge'
+import Bridge from '../ConnectingPage/Bridge'
 import MainPage from '../MainPage'
 import EditProfile from '../UserProfile/EditProfile'
 
