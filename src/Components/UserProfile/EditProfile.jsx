@@ -3,9 +3,9 @@ import HeaderCom from '../ConnectingPage/HeaderCom';
 import LandingFooter from '../LandingPage/LandingFooter';
 import axios from 'axios';
 
-// const API_URL = import.meta.env.VITE_API_URL || 'https://todo-backend-beta-two.vercel.app';
+const API_URL = import.meta.env.VITE_API_URL || 'https://todo-backend-beta-two.vercel.app';
 
-const API_URL = 'http://localhost:3000';
+// const API_URL = 'http://localhost:3000';
 
 function EditProfile() {
     const [profile, setProfile] = useState({
