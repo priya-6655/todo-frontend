@@ -1,0 +1,145 @@
+* {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.landing_Nav_back {
+    width: 100vw;
+    height: 6vh;
+    background-color: rgb(203, 196, 187, 0.6);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navLogo {
+    width: 3vw;
+    height: 5vh;
+    object-fit: contain;
+}
+
+.Nav-Menu {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    flex: 1;
+}
+
+.Nav-Item {
+    display: flex;
+    align-items: center;
+    margin: 0 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.Nav-Item span {
+    font-size: 15px;
+    margin-left: 5px;
+    font-weight: 500;
+}
+
+.Nav-Item:hover span {
+    color: #f23c3c;
+}
+
+.Nav_image {
+    width: 20px;
+    height: 20px;
+}
+
+#search-item {
+    width: 500px;
+    padding: 3px;
+    border-radius: 15px;
+    border: 1px solid #888;
+    outline: none;
+    margin-right: 20px;
+}
+
+.cart-style {
+    font-size: 25px;
+    cursor: pointer;
+    font-weight: bolder;
+    transition: 0.3s;
+    margin: 0 10px;
+    color: #444;
+}
+
+.cart-style:hover {
+    color: #f23c3c;
+}
+
+.mobile-menu {
+    display: none;
+    flex-direction: column;
+    background-color: rgba(245, 243, 241, 0.9);
+    gap: 12px;
+    padding: 10px 0;
+    font-weight: 500;
+}
+
+.mobile-menu-icon {
+    display: none;
+}
+
+.show-menu {
+    display: flex;
+}
+
+.verticalNav {
+    display: none;
+}
+
+@media (max-width: 768px) {
+
+    .landing_Nav_back {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 12px;
+        justify-content: flex-start;
+    }
+
+    .navLogo {
+        display: none;
+    }
+
+    .verticalNav {
+        display: block;
+    }
+
+    .mobile-menu-icon {
+        display: block;
+        font-size: 28px;
+        cursor: pointer;
+    }
+
+    .Nav-Menu {
+        display: none;
+    }
+
+    #search-item {
+        width: 50%;
+        margin: 8px auto;
+        display: block;
+    }
+
+    .nav-icons {
+        margin-left: auto;
+        display: flex;
+        gap: 10px;
+    }
+}
+
+
+/*landingPage*/
+.carousel-item {
+    height: 70vh;
+}
+
+.carousel-item img {
+    height: 100%;
+    object-fit: cover;
+}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import './MainPage.css'
+import { useNavigate } from 'react-router-dom';
 
 const API_URL = import.meta.env.VITE_API_URL || 'https://todo-backend-beta-two.vercel.app';
 
@@ -8,6 +9,7 @@ function MainPage() {
     const [todo, setTodo] = useState({ todoText: '' })
     const [todoList, setTodoList] = useState([])
     const [editIndex, setEditIndex] = useState(null)
+    const navigate = useNavigate()
 
     const openSideNav = () => {
         setMenuOpen(!menuOpen)
@@ -117,11 +119,15 @@ function MainPage() {
             alert("Server Error")
         }
     }
+
+    const openUserProfile = () => {
+        navigate('/userprofile')
+    }
     return (
         <>
             <div id='main_background'>
                 <div id='header'>
-                    <h1 className='rainbow-Text'>Daily Task Manager</h1>
+                    <p className='rainbow-Text fs-2 fw-bold'>Daily Task Manager</p>
                 </div>
 
                 <div className='navbar_container'>
@@ -132,10 +138,16 @@ function MainPage() {
                         <span>Contact Us</span>
                         <span onClick={viewTodo}>View_todo</span>
                     </div>
+
+                    <div className="profile-section">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="profile" width="40" height="40"
+                            style={{ borderRadius: "50%", cursor: "pointer" }} onClick={openUserProfile} />
+                    </div>
                 </div>
 
                 <div className='container'>
-                    <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Todo List</h2>
+                    <p style={{ textAlign: 'center', marginBottom: '20px', fontSize: '22px', fontWeight: 'bold' }}>Todo List</p>
+
                     <form onSubmit={handleTodoSubmit}>
                         <input type='text' id='todoText' placeholder='Type and create your todo list...' value={todo.todoText} onChange={handleChange} />
                         <button type='submit' className='todo-submit'>{editIndex ? 'Update' : 'Add'}</button>
@@ -158,8 +170,6 @@ function MainPage() {
                         </ul>
                     </div>
                 </div>
-
-
             </div>
         </>
     )

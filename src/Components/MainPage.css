@@ -28,7 +28,7 @@
     background-color: rgba(235, 138, 47, 0.4);
     display: flex;
     align-items: center;
-    position: relative;
+    padding-right: 10px;
 }
 
 #nav_bar {
@@ -39,6 +39,7 @@
     font-weight: bold;
     cursor: pointer;
     padding: 10px;
+    width: 100%;
 }
 
 #hamburger {
@@ -47,6 +48,12 @@
     padding: 10px;
     cursor: pointer;
 }
+
+.profile-section {
+    margin-left: auto;
+    padding: 10px;
+}
+
 
 @media (max-width:600px) {
     #hamburger {
@@ -70,6 +77,13 @@
 
     #nav_bar.show {
         display: flex;
+        width: 50%;
+    }
+
+    .profile-section {
+        position: absolute;
+        right: 10px;
+        top: 10px;
     }
 }
 
