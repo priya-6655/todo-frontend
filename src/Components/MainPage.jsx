@@ -3,7 +3,7 @@ import './MainPage.css'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://todo-backend-gamma-roan.vercel.app';
+const API_URL = import.meta.env.VITE_API_URL || 'https://todo-frontend-six-eta.vercel.app';
 
 //const API_URL = 'http://localhost:3000';
 
