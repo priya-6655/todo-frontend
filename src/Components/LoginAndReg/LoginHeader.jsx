@@ -11,18 +11,18 @@ function LoginHeader() {
         <>
             <div className='container-fluid py-3' style={{ backgroundColor: "rgba(212, 206, 207, 0.6)" }}>
                 <div className='row align-items-center'>
-                    <div className="col-4 col-md-3 d-flex justify-content-start ps-4">
+                    <div className="col-2 col-md-2 d-flex justify-content-start ps-4">
                         <img src="https://www.freepnglogos.com/uploads/logo-home-png/photo-icon-home-logo-23.png"
                             alt="home" className="img-fluid" style={{ width: "50px", height: "40px", cursor: "pointer" }} onClick={backtoHome} />
                     </div>
 
-                    <div className="col-4 col-md-6 text-center">
-                        <p className="fw-bold m-0 text-dark fs-5">Eagle Multi Web Services</p>
+                    <div className="col-7 col-md-7 text-center">
+                        <p className="fw-bold m-0 text-dark fs-5">Eagle Web Services</p>
                     </div>
 
-                    <div className="col-4 col-md-3 text-end pe-4">
+                    <div className="col-3 col-md-3 text-end pe-3">
                         <span style={{ fontSize: "16px", cursor: "pointer" }} className="text-primary">
-                            Need Help?
+                            Help?
                         </span>
                     </div>
                 </div>

@@ -49,11 +49,11 @@ function LandingNav() {
 
                 <div className='verticalNav'>
                     <div className={`mobile-menu ${open ? 'show-menu' : ''}`}>
-                        <div className='mobile-Nav-Item'>Book my tickets</div>
-                        <div className='mobile-Nav-Item'>Todo App</div>
-                        <div className='mobile-Nav-Item'>Our freshes</div>
-                        <div className='mobile-Nav-Item'>Groceries</div>
-                        <div className='mobile-Nav-Item'>Dress collections</div>
+                        <div className='mobile-Nav-Item' onClick={() => setOpen(false)}>Book my tickets</div>
+                        <div className='mobile-Nav-Item' onClick={() => setOpen(false)}>Todo App</div>
+                        <div className='mobile-Nav-Item' onClick={() => setOpen(false)}>Our freshes</div>
+                        <div className='mobile-Nav-Item' onClick={() => setOpen(false)}>Groceries</div>
+                        <div className='mobile-Nav-Item' onClick={() => setOpen(false)}>Dress collections</div>
                     </div>
                 </div>
 

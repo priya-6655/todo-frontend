@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import LoginHeader from './LoginHeader'
 import './Login.css'
 import { useNavigate } from 'react-router-dom';
+import LandingFooter from '../LandingPage/LandingFooter';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://todo-backend-beta-two.vercel.app';
-// const API_URL = 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_API_URL || 'https://todo-frontend-six-eta.vercel.app';
+//const API_URL = 'http://localhost:3000';
 
 
 function Login() {
@@ -88,13 +89,12 @@ function Login() {
     };
 
     return (
-        <>
+        <div className='login-page-wrapper'>
             <LoginHeader />
-            <div className='container-fluid'>
-                <div className='login_theme'></div>
+            <div className='login-content'>
                 {!regBox && (
                     <form onSubmit={handleLogin}>
-                        <div className='col-8 border border-danger position-absolute p-4' style={{ top: "30%", left: "15%" }}>
+                        <div className='form-box shadow-lg'>
                             <p className='fs-4 fw-bold text-success text-decoration-underline text-center'>Login</p>
 
                             <div className='row mb-3'>
@@ -130,7 +130,7 @@ function Login() {
                 )}
 
                 {regBox && (
-                    <div className='col-8 border border-primary position-absolute p-4' style={{ top: "30%", left: "15%" }}>
+                    <div className='form-box shadow-lg'>
                         <p className='fs-4 fw-bold text-primary text-decoration-underline text-center'>Register</p>
 
                         <div className='row mb-3'>
@@ -189,7 +189,7 @@ function Login() {
 
                         <div className='row mb-3 text-center'>
                             <div className='col-12'>
-                                <button type='button' className='btn btn-primary fw-bold w-25' onClick={handleRegister}>Register</button>
+                                <button type='button' className='btn btn-primary fw-bold w-50' onClick={handleRegister}>Register</button>
                             </div>
                         </div>
 
@@ -202,9 +202,9 @@ function Login() {
                         </div>
                     </div>
                 )}
-
             </div>
-        </>
+            <LandingFooter />
+        </div>
     )
 }
 

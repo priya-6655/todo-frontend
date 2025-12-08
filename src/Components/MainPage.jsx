@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import './MainPage.css'
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://todo-backend-beta-two.vercel.app';
+const API_URL = import.meta.env.VITE_API_URL || 'https://todo-frontend-six-eta.vercel.app';
+
+//const API_URL = 'http://localhost:3000';
 
 function MainPage() {
     const [menuOpen, setMenuOpen] = useState(false)
@@ -34,7 +37,7 @@ function MainPage() {
                 })
                 const out = await res.json()
                 if (out.success) {
-                    alert('Todo update successfully')
+                    toast.success('Todo update successfully')
                     viewTodo()
                     setTodo({ todoText: "" })
                     setEditIndex(null)
@@ -49,14 +52,14 @@ function MainPage() {
                 const out = await res.json()
 
                 if (out.success) {
-                    alert('Item added Successfully')
+                    toast.success('Item added Successfully')
                     setTodo({ todoText: '' })
                 } else {
-                    alert(out.message || "Added failed");
+                    toast.error(out.message || "Added failed");
                 }
             }
         } catch (error) {
-            alert('Server error!')
+            toast.error('Server error!')
             console.log(error)
         }
     }
@@ -92,7 +95,7 @@ function MainPage() {
             })
         } catch (error) {
             console.log(error);
-            alert('Server Error', error)
+            toast.error('Server Error', error)
         }
     }
 
@@ -111,17 +114,21 @@ function MainPage() {
             const out = await res.json()
 
             if (out.success) {
-                alert('Todo deleted successfully')
+                toast.success('Todo deleted successfully')
                 viewTodo()
             }
         } catch (error) {
             console.log(error)
-            alert("Server Error")
+            toast.error("Server Error")
         }
     }
 
     const openUserProfile = () => {
         navigate('/userprofile')
+    }
+
+    const backtoHome = () => {
+        navigate('/login')
     }
     return (
         <>
@@ -131,9 +138,12 @@ function MainPage() {
                 </div>
 
                 <div className='navbar_container'>
-                    <div id="hamburger" onClick={openSideNav}>&#9776;</div>
+                    <div id="hamburger" onClick={openSideNav}>
+                        {menuOpen ? "✖" : "☰"}
+                    </div>
                     <div id='nav_bar' className={menuOpen ? "show" : ""}>
-                        <span>Home</span>
+                        <span className="closeBtn" onClick={() => setMenuOpen(false)}>✖</span>
+                        <span onClick={backtoHome}>Home</span>
                         <span>About Us</span>
                         <span>Contact Us</span>
                         <span onClick={viewTodo}>View_todo</span>
@@ -146,7 +156,7 @@ function MainPage() {
                 </div>
 
                 <div className='container'>
-                    <p style={{ textAlign: 'center', marginBottom: '20px', fontSize: '22px', fontWeight: 'bold' }}>Todo List</p>
+                    <p>Todo List</p>
 
                     <form onSubmit={handleTodoSubmit}>
                         <input type='text' id='todoText' placeholder='Type and create your todo list...' value={todo.todoText} onChange={handleChange} />
