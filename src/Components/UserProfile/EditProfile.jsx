@@ -4,7 +4,7 @@ import LandingFooter from '../LandingPage/LandingFooter';
 import axios from 'axios';
 import './EditProfile.css'
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://todo-frontend-six-eta.vercel.app';
+const API_URL = import.meta.env.VITE_API_URL || 'https://todo-backend-gamma-roan.vercel.app';
 
 //const API_URL = 'http://localhost:3000';
 
