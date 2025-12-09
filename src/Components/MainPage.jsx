@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './MainPage.css'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://todo-backend-1-q0tf.onrender.com';
 
@@ -12,6 +13,7 @@ function MainPage() {
     const [todo, setTodo] = useState({ todoText: '' })
     const [todoList, setTodoList] = useState([])
     const [editIndex, setEditIndex] = useState(null)
+    const [profile, setProfile] = useState({})
     const navigate = useNavigate()
 
     const openSideNav = () => {
@@ -130,6 +132,16 @@ function MainPage() {
     const backtoHome = () => {
         navigate('/login')
     }
+
+    const userID = localStorage.getItem('userId')
+
+    useEffect(() => {
+        if (userID) {
+            axios.get(`${API_URL}/register/getuser/${userID}`)
+                .then(res => setProfile(res.data.data))
+                .catch(err => console.log(err))
+        }
+    }, [userID])
     return (
         <>
             <div id='main_background'>
@@ -149,9 +161,13 @@ function MainPage() {
                         <span onClick={viewTodo}>View_todo</span>
                     </div>
 
-                    <div className="profile-section">
-                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="profile" width="40" height="40"
-                            style={{ borderRadius: "50%", cursor: "pointer" }} onClick={openUserProfile} />
+                    <div className="profile-section" onClick={openUserProfile} >
+                        {profile.image ? (
+                            <img src={profile.image} alt='profile' width='40' height='40' style={{ borderRadius: "50%" }} />
+                        ) : (
+                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="profile" width="40" height="40"
+                                style={{ borderRadius: "50%", cursor: "pointer" }} />
+                        )}
                     </div>
                 </div>
 
