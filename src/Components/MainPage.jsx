@@ -142,6 +142,11 @@ function MainPage() {
                 .catch(err => console.log(err))
         }
     }, [userID])
+
+
+    const userLogout = () => {
+        navigate('/login')
+    }
     return (
         <>
             <div id='main_background'>
@@ -159,6 +164,7 @@ function MainPage() {
                         <span>About Us</span>
                         <span>Contact Us</span>
                         <span onClick={viewTodo}>View_todo</span>
+                        <span onClick={userLogout}>Logout</span>
                     </div>
 
                     <div className="profile-section" onClick={openUserProfile} >

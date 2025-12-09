@@ -5,6 +5,7 @@ import FilePath from './Components/Root/FilePath'
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import 'react-phone-input-2/lib/style.css'
 
 
 createRoot(document.getElementById('root')).render(

@@ -4,6 +4,7 @@ import './Login.css'
 import { useNavigate } from 'react-router-dom';
 import LandingFooter from '../LandingPage/LandingFooter';
 import { toast } from 'react-toastify';
+import PhoneInput from 'react-phone-input-2';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://todo-backend-1-q0tf.onrender.com';
 //const API_URL = 'http://localhost:3000';
@@ -12,8 +13,18 @@ const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://todo-backend-1-q0t
 function Login() {
     const [regBox, setRegBox] = useState(false)
     const [regData, setRegData] = useState({ fname: '', lname: "", gender: "", phone: "", regUsername: "", regEmail: "", regPass: "" })
-    const [logData, setLogData] = useState({ email: "", pass: "" })
+    const [logData, setLogData] = useState({ userName: "", pass: "" })
     const navigate = useNavigate()
+    const [viewPassword, setViewPassword] = useState(false)
+    const [viewRegPass, setViewRegPass] = useState(false)
+
+    const viewPass = () => {
+        setViewPassword(!viewPassword)
+    }
+
+    const handleRegPass = () => {
+        setViewRegPass(!viewRegPass)
+    }
 
     const handleReg = (e) => {
         e.preventDefault()
@@ -29,6 +40,13 @@ function Login() {
         setRegData({
             ...regData,
             [e.target.id]: e.target.value
+        })
+    }
+
+    const handleRegPhone = (value) => {
+        setRegData({
+            ...regData,
+            phone: value
         })
     }
 
@@ -68,7 +86,7 @@ function Login() {
             const res = await fetch(`${API_URL}/register/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email: logData.email, pass: logData.pass })
+                body: JSON.stringify({ userName: logData.userName, pass: logData.pass })
             });
 
             const data = await res.json();
@@ -101,14 +119,15 @@ function Login() {
                             <div className='row mb-3'>
                                 <label htmlFor='username' className='col-sm-3 col-form-label text-light fw-bold'>Email</label>
                                 <div className='col-sm-8'>
-                                    <input type='email' id='email' className='col-sm-6 fw-bold form-control' placeholder='Enter your email' value={logData.email} onChange={handleLogData} />
+                                    <input type='text' id='userName' className='col-sm-6 fw-bold form-control' placeholder='Enter your email' value={logData.userName} onChange={handleLogData} />
                                 </div>
                             </div>
 
                             <div className='row mb-3'>
                                 <label htmlFor='pass' className='col-sm-3 col-form-label text-light fw-bold'>Password</label>
-                                <div className='col-sm-8'>
-                                    <input type='password' id='pass' className='col-sm-6 fw-bold form-control' placeholder='Enter your password' value={logData.pass} onChange={handleLogData} />
+                                <div className='col-sm-8 position-relative'>
+                                    <input type={viewPassword ? "text" : "password"} id='pass' className='col-sm-6 fw-bold form-control' placeholder='Enter your password' value={logData.pass} onChange={handleLogData} />
+                                    <i className={viewPassword ? "bi bi-eye-slash-fill" : "bi-eye-fill"} style={{ top: '20%', right: '10%', cursor: 'pointer', position: "absolute" }} onClick={viewPass}></i>
                                 </div>
                             </div>
 
@@ -163,7 +182,8 @@ function Login() {
                         <div className='row mb-3'>
                             <label htmlFor='phone' className='col-sm-3 col-form-label fw-bold text-light'>Phone</label>
                             <div className='col-sm-8'>
-                                <input type='tel' id='phone' className='col-sm-6 fw-bold form-control' placeholder='Enter your phone number' value={regData.phone} onChange={handleRegChange} />
+                                {/* <input type='tel' id='phone' className='col-sm-6 fw-bold form-control' placeholder='Enter your phone number' value={regData.phone} onChange={handleRegChange} /> */}
+                                <PhoneInput country={'in'} value={regData.phone} onChange={handleRegPhone} placeholder='Enter your phone number' inputStyle={{ width: '500px', fontSize: '16px', borderRadius: '15px' }} />
                             </div>
                         </div>
 
@@ -183,8 +203,9 @@ function Login() {
 
                         <div className='row mb-3'>
                             <label htmlFor='regPass' className='col-sm-3 col-form-label text-light fw-bold'>Password</label>
-                            <div className='col-sm-8'>
-                                <input type='password' id='regPass' className='col-sm-6 fw-bold form-control' placeholder='Enter your password' value={regData.regPass} onChange={handleRegChange} />
+                            <div className='col-sm-8 position-relative'>
+                                <input type={viewRegPass ? "text" : "password"} id='regPass' className='col-sm-6 fw-bold form-control' placeholder='Enter your password' value={regData.regPass} onChange={handleRegChange} />
+                                <i className={viewRegPass ? "bi bi-eye-slash-fill" : "bi-eye-fill"} style={{ bottom: '15%', right: '10%', cursor: 'pointer', position: "absolute" }} onClick={handleRegPass}></i>
                             </div>
                         </div>
 

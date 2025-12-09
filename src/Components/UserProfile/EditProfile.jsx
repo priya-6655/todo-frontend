@@ -4,6 +4,7 @@ import LandingFooter from '../LandingPage/LandingFooter';
 import axios from 'axios';
 import './EditProfile.css'
 import { toast } from 'react-toastify';
+import PhoneInput from 'react-phone-input-2';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://todo-backend-1-q0tf.onrender.com';
 
@@ -38,8 +39,11 @@ function EditProfile() {
         });
     };
 
-    const handleProfile = () => {
-        toast.warning('Click edit button bellow the box!')
+    const handlephoneChange = (value) => {
+        setProfile({
+            ...profile,
+            phone: value
+        })
     }
 
     const convertToBase = (file) => {
@@ -68,12 +72,12 @@ function EditProfile() {
             <div className='container mt-4'>
                 <p className='mb-3 fs-4 text-center fw-bold text-dark'>Profile Details</p>
 
-                <div className='profile-container' onClick={handleProfile}>
+                <div className='profile-container'>
                     <label htmlFor='fileUpload'>
                         {profile.image ? (
                             <img src={profile.image} className='profile-preview' alt='profile' />
                         ) : (
-                            <i className="bi bi-person-circle profile-icon"></i>
+                            <i className="bi bi-person-circle profile-icon" onClick={() => !isEditing && toast.warning('Click "Edit Profile" button below first!')}></i>
                         )}
                     </label>
 
@@ -108,8 +112,9 @@ function EditProfile() {
 
                 <div className='mb-3'>
                     <label className='fw-semibold'>Phone</label>
-                    <input type="text" className="form-control" name="phone"
-                        value={profile.phone} onChange={handleChange} disabled={!isEditing} />
+                    {/* <input type="text" className="form-control" name="phone"
+                        value={profile.phone} onChange={handleChange} disabled={!isEditing} /> */}
+                    <PhoneInput country={'in'} value={profile.phone} onChange={handlephoneChange} disabled={!isEditing} inputStyle={{ width: '650px' }} />
                 </div>
 
                 <div className='mb-3'>
