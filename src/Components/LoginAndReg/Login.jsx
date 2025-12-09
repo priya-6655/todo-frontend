@@ -3,6 +3,7 @@ import LoginHeader from './LoginHeader'
 import './Login.css'
 import { useNavigate } from 'react-router-dom';
 import LandingFooter from '../LandingPage/LandingFooter';
+import { toast } from 'react-toastify';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://todo-backend-1-q0tf.onrender.com';
 //const API_URL = 'http://localhost:3000';
@@ -42,15 +43,15 @@ function Login() {
             const data = await res.json()
 
             if (!res.ok) {
-                alert(data.message);
+                toast.warning(data.message);
             } else {
-                alert('Registration Successful!')
+                toast.success('Registration Successful!')
                 setRegBox(false)
                 setRegData({ fname: '', lname: '', gender: '', phone: '', regUsername: '', regEmail: '', regPass: '' });
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Server error. Try again later.");
+            toast.error("Server error. Try again later.");
         }
     }
 
@@ -73,9 +74,9 @@ function Login() {
             const data = await res.json();
 
             if (!res.ok) {
-                alert(data.message);
+                toast.warning(data.message);
             } else {
-                alert("Login Successful!");
+                toast.success("Login Successful!");
                 localStorage.setItem("userId", data.data.id);
                 localStorage.setItem("username", data.data.username);
                 console.log("Logged in user:", data.data);
@@ -84,7 +85,7 @@ function Login() {
 
         } catch (error) {
             console.error("Error:", error);
-            alert("Server error. Try again later.");
+            toast.error("Server error. Try again later.");
         }
     };
 
