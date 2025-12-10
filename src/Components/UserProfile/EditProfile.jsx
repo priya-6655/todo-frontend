@@ -76,7 +76,7 @@ function EditProfile() {
             })
     }
 
-    const previewimg = selectFile ? URL.createObjectURL(selectFile) : profile.image
+    const previewImage = selectFile ? URL.createObjectURL(selectFile) : profile.image
 
     return (
         <div>
@@ -87,8 +87,8 @@ function EditProfile() {
 
                 <div className='profile-container'>
                     <label htmlFor='fileUpload'>
-                        {previewimg ? (
-                            <img src={previewimg} className='profile-preview' alt='profile' />
+                        {previewImage ? (
+                            <img src={previewImage} className='profile-preview' alt='profile' />
                         ) : (
                             <i className="bi bi-person-circle profile-icon" onClick={() => !isEditing && toast.warning('Click "Edit Profile" button below first!')}></i>
                         )}
