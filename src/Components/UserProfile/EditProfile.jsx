@@ -64,7 +64,7 @@ function EditProfile() {
         if (selectFile) {
             formData.append('image', selectFile)
         }
-        axios.put(`${API_URL}/upload/editprofile/${userId}`, formData, {
+        axios.put(`${API_URL}/register/editprofile/${userId}`, formData, {
             headers: { "Content-Type": "multipart/form-data" }
         })
             .then(() => {
