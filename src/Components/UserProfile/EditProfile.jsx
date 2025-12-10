@@ -20,6 +20,7 @@ function EditProfile() {
         regEmail: ''
     });
     const [isEditing, setISEditing] = useState(false)
+    const [selectFile, setSelectFile] = useState(null)
 
 
     const userId = localStorage.getItem("userId");
@@ -46,16 +47,26 @@ function EditProfile() {
         })
     }
 
-    const convertToBase = (file) => {
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onload = () => {
-            setProfile({ ...profile, image: reader.result })
-        }
+    const handleFile = (file) => {
+        setSelectFile(file)
     }
 
     const handleSave = () => {
-        axios.put(`${API_URL}/register/editprofile/${userId}`, profile)
+        const formData = new FormData()
+
+        formData.append('fname', profile.fname)
+        formData.append('lname', profile.lname)
+        formData.append('gender', profile.gender)
+        formData.append('phone', profile.phone)
+        formData.append('regUsername', profile.regUsername)
+        formData.append('regEmail', profile.regEmail)
+
+        if (selectFile) {
+            formData.append('image', selectFile)
+        }
+        axios.put(`${API_URL}/register/editprofile/${userId}`, formData, {
+            headers: { "Content-Type": "multipart/form-data" }
+        })
             .then(() => {
                 toast.success("Profile updated successfully!")
                 setISEditing(false)
@@ -82,7 +93,7 @@ function EditProfile() {
                     </label>
 
                     <input id='fileUpload' type='file' accept='image/*' style={{ display: "none" }}
-                        onChange={(e) => convertToBase(e.target.files[0])} disabled={!isEditing} />
+                        onChange={(e) => handleFile(e.target.files[0])} disabled={!isEditing} />
 
                     <i className="bi bi-pencil-fill edit-icon"></i>
                 </div>
