@@ -3,6 +3,7 @@ import './MainPage.css'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://todo-backend-1-q0tf.onrender.com';
 
@@ -133,15 +134,19 @@ function MainPage() {
         navigate('/login')
     }
 
-    const userID = localStorage.getItem('userId')
+
+    const { user, token } = useSelector(state => state.user)
+    const userID = user?.id
 
     useEffect(() => {
-        if (userID) {
-            axios.get(`${API_URL}/register/getuser/${userID}`)
+        if (userID && token) {
+            axios.get(`${API_URL}/register/getuser/${userID}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
                 .then(res => setProfile(res.data.data))
                 .catch(err => console.log(err))
         }
-    }, [userID])
+    }, [userID, token])
 
 
     const userLogout = () => {

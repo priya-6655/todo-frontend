@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import HeaderCom from '../ConnectingPage/HeaderCom';
 import LandingFooter from '../LandingPage/LandingFooter';
 import axios from 'axios';
 import './EditProfile.css'
 import { toast } from 'react-toastify';
 import PhoneInput from 'react-phone-input-2';
+import { useSelector } from 'react-redux';
+import LoginNav from '../LoginAndReg/LoginNav';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://todo-backend-1-q0tf.onrender.com';
 
@@ -23,15 +24,18 @@ function EditProfile() {
     const [selectFile, setSelectFile] = useState(null)
 
 
-    const userId = localStorage.getItem("userId");
+    const { token, user } = useSelector(state => state.user)
+    const userId = user?.id
 
     useEffect(() => {
-        if (userId) {
-            axios.get(`${API_URL}/register/getuser/${userId}`)
+        if (userId && token) {
+            axios.get(`${API_URL}/register/getuser/${userId}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
                 .then(res => setProfile(res.data.data))
                 .catch(err => console.log(err));
         }
-    }, [userId]);
+    }, [userId, token]);
 
     const handleChange = (e) => {
         setProfile({
@@ -65,7 +69,10 @@ function EditProfile() {
             formData.append('image', selectFile)
         }
         axios.put(`${API_URL}/register/editprofile/${userId}`, formData, {
-            headers: { "Content-Type": "multipart/form-data" }
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`
+            }
         })
             .then(() => {
                 toast.success("Profile updated successfully!")
@@ -80,7 +87,7 @@ function EditProfile() {
 
     return (
         <div>
-            <HeaderCom />
+            <LoginNav />
 
             <div className='container mt-4'>
                 <p className='mb-3 fs-4 text-center fw-bold text-dark'>Profile Details</p>

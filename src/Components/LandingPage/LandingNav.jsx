@@ -9,6 +9,10 @@ function LandingNav() {
     const openLogin = () => {
         navigate('/login')
     }
+
+    const openVegPage = () => {
+        navigate('/orderVeg')
+    }
     return (
         <>
             <nav className='landing_Nav_back'>
@@ -22,11 +26,11 @@ function LandingNav() {
                         <img src='https://cdn-icons-png.flaticon.com/512/9137/9137943.png' alt='tickets' className='Nav_image' />
                         <span>Book my tickets</span>
                     </div>
-                    <div className='Nav-Item'>
+                    <div className='Nav-Item' onClick={openLogin}>
                         <img src='https://cdn-icons-png.freepik.com/256/8476/8476658.png?semt=ais_white_label' alt='todo' className='Nav_image' />
                         <span>Todo App</span>
                     </div>
-                    <div className='Nav-Item'>
+                    <div className='Nav-Item' onClick={openVegPage}>
                         <img src='https://www.pngplay.com/wp-content/uploads/8/Vegetable-Collection-Transparent-Free-PNG.png' alt='veg' className='Nav_image' />
                         <span>Our freshes</span>
                     </div>
@@ -44,7 +48,7 @@ function LandingNav() {
 
                 <div className='nav-icons'>
                     <i className="bi bi-cart cart-style"></i>
-                    <i className="bi bi-person-circle cart-style" onClick={openLogin}></i>
+                    <i className="bi bi-person-circle cart-style"></i>
                 </div>
 
                 <div className='verticalNav'>

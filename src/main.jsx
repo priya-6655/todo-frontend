@@ -6,13 +6,17 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import 'react-phone-input-2/lib/style.css'
+import { Provider } from 'react-redux';
+import { store } from './Components/Redux/Store/Store';
 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <FilePath />
-      <ToastContainer position='top-center' autoClose={1500} />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <FilePath />
+        <ToastContainer position='top-center' autoClose={1500} />
+      </BrowserRouter>
+    </Provider>
   </StrictMode>,
 )

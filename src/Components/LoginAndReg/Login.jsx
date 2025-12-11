@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import LandingFooter from '../LandingPage/LandingFooter';
 import { toast } from 'react-toastify';
 import PhoneInput from 'react-phone-input-2';
+import { setUser } from '../Redux/Reducer/UserSlice';
+import { useDispatch } from 'react-redux';
+
 
 const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://todo-backend-1-q0tf.onrender.com';
 //const API_URL = 'http://localhost:3000';
@@ -15,6 +18,7 @@ function Login() {
     const [regData, setRegData] = useState({ fname: '', lname: "", gender: "", phone: "", regUsername: "", regEmail: "", regPass: "" })
     const [logData, setLogData] = useState({ userName: "", pass: "" })
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [viewPassword, setViewPassword] = useState(false)
     const [viewRegPass, setViewRegPass] = useState(false)
 
@@ -95,10 +99,14 @@ function Login() {
                 toast.warning(data.message);
             } else {
                 toast.success("Login Successful!");
-                localStorage.setItem("userId", data.data.id);
-                localStorage.setItem("username", data.data.username);
-                console.log("Logged in user:", data.data);
-                navigate('/bridge')
+
+                dispatch(
+                    setUser({
+                        user: data.data.user,
+                        token: data.data.token
+                    })
+                )
+                navigate('/todo')
             }
 
         } catch (error) {
