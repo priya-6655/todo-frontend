@@ -127,7 +127,7 @@ function Login() {
                             <div className='row mb-3'>
                                 <label htmlFor='username' className='col-sm-3 col-form-label text-light fw-bold'>User Name</label>
                                 <div className='col-sm-8'>
-                                    <input type='text' id='userName' className='col-sm-6 fw-bold form-control' placeholder='Enter your email' value={logData.userName} onChange={handleLogData} />
+                                    <input type='text' id='userName' className='col-sm-6 fw-bold form-control' placeholder='Enter your username' value={logData.userName} onChange={handleLogData} />
                                 </div>
                             </div>
 
