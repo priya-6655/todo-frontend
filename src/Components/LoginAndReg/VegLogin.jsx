@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import LoginHeader from './LoginHeader'
 import LandingFooter from '../LandingPage/LandingFooter'
-import './VegLogin.css'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import PhoneInput from 'react-phone-input-2'
@@ -14,26 +13,9 @@ function VegLogin() {
     const [showPassword, setShowPassword] = useState(false)
     const navigate = useNavigate()
 
-    const handleLoginChange = (e) => {
-        setLoginData({
-            ...loginData,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    const handleRegisterChange = (e) => {
-        setRegisterData({
-            ...registerData,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    const handlePhoneChange = (value) => {
-        setRegisterData({
-            ...registerData,
-            phone: value
-        })
-    }
+    const handleLoginChange = (e) => setLoginData({ ...loginData, [e.target.name]: e.target.value })
+    const handleRegisterChange = (e) => setRegisterData({ ...registerData, [e.target.name]: e.target.value })
+    const handlePhoneChange = (value) => setRegisterData({ ...registerData, phone: value })
 
     const handleLoginSubmit = (e) => {
         e.preventDefault()
@@ -48,18 +30,24 @@ function VegLogin() {
     }
 
     return (
-        <div className='veg-login-wrapper min-vh-100 d-flex flex-column'>
+        <div className='min-h-screen flex flex-col bg-gradient-to-br from-green-100 to-green-200'>
             <LoginHeader />
 
-            <div className='flex-grow-1 d-flex align-items-center justify-content-center py-4 px-3'>
-                <div className='bg-white rounded-4 shadow-lg p-4 p-md-5' style={{ maxWidth: '450px', width: '100%' }}>
+            <div className='flex-1 flex items-center justify-center py-4 px-3'>
+                <div className='bg-white rounded-2xl shadow-xl p-6 md:p-8 w-full max-w-md'>
 
                     {/* Tabs */}
-                    <div className='d-flex gap-2 mb-4'>
-                        <button className={`btn flex-fill fw-semibold ${isLogin ? 'btn-success' : 'btn-outline-success'}`} onClick={() => setIsLogin(true)}>
+                    <div className='flex gap-2 mb-6'>
+                        <button 
+                            className={`flex-1 py-2 rounded-lg font-semibold transition ${isLogin ? 'bg-green-600 text-white' : 'border-2 border-green-600 text-green-600 hover:bg-green-50'}`}
+                            onClick={() => setIsLogin(true)}
+                        >
                             Login
                         </button>
-                        <button className={`btn flex-fill fw-semibold ${!isLogin ? 'btn-success' : 'btn-outline-success'}`} onClick={() => setIsLogin(false)}>
+                        <button 
+                            className={`flex-1 py-2 rounded-lg font-semibold transition ${!isLogin ? 'bg-green-600 text-white' : 'border-2 border-green-600 text-green-600 hover:bg-green-50'}`}
+                            onClick={() => setIsLogin(false)}
+                        >
                             Register
                         </button>
                     </div>
@@ -67,119 +55,153 @@ function VegLogin() {
                     {/* Login Form */}
                     {isLogin ? (
                         <form onSubmit={handleLoginSubmit}>
-                            <p className='text-success text-center mb-1 fs-3 fw-bold'>Welcome Back!</p>
-                            <p className='text-muted text-center mb-4'>Login to order fresh vegetables</p>
+                            <p className='text-green-600 text-center text-2xl font-bold mb-1'>Welcome Back!</p>
+                            <p className='text-gray-500 text-center mb-6'>Login to order fresh vegetables</p>
 
-                            <div className='mb-3 col-md-8'>
-                                <label className='form-label fw-semibold'>Email</label>
-                                <div className='input-group'>
-                                    <span className='input-group-text bg-success text-white'>
+                            <div className='mb-4'>
+                                <label className='block font-semibold mb-2'>Email</label>
+                                <div className='flex'>
+                                    <span className='bg-green-600 text-white px-3 py-2 rounded-l-lg flex items-center'>
                                         <i className="bi bi-envelope-fill"></i>
                                     </span>
-
-                                    <input type='email' className='form-control' name='email' placeholder='Enter your email'
-                                        value={loginData.email} onChange={handleLoginChange} required />
+                                    <input 
+                                        type='email' 
+                                        className='flex-1 border border-gray-300 rounded-r-lg px-3 py-2 focus:outline-none focus:border-green-500'
+                                        name='email' 
+                                        placeholder='Enter your email'
+                                        value={loginData.email} 
+                                        onChange={handleLoginChange} 
+                                        required 
+                                    />
                                 </div>
                             </div>
 
-                            <div className='mb-3 col-md-8'>
-                                <label className='form-label fw-semibold'>Password</label>
-                                <div className='input-group'>
-
-                                    <span className='input-group-text bg-success text-white'>
+                            <div className='mb-4'>
+                                <label className='block font-semibold mb-2'>Password</label>
+                                <div className='flex'>
+                                    <span className='bg-green-600 text-white px-3 py-2 rounded-l-lg flex items-center'>
                                         <i className="bi bi-lock-fill"></i>
                                     </span>
-
-                                    <input type={showPassword ? 'text' : 'password'} className='form-control' name='password' placeholder='Enter your password'
-                                        value={loginData.password} onChange={handleLoginChange} required />
-
-                                    <span className='input-group-text bg-white' style={{ cursor: 'pointer' }} onClick={() => setShowPassword(!showPassword)}>
-                                        <i className={`bi ${showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'} text-secondary`}></i>
+                                    <input 
+                                        type={showPassword ? 'text' : 'password'} 
+                                        className='flex-1 border-y border-gray-300 px-3 py-2 focus:outline-none focus:border-green-500'
+                                        name='password' 
+                                        placeholder='Enter your password'
+                                        value={loginData.password} 
+                                        onChange={handleLoginChange} 
+                                        required 
+                                    />
+                                    <span 
+                                        className='bg-white border border-gray-300 px-3 py-2 rounded-r-lg flex items-center cursor-pointer'
+                                        onClick={() => setShowPassword(!showPassword)}
+                                    >
+                                        <i className={`bi ${showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'} text-gray-500`}></i>
                                     </span>
                                 </div>
                             </div>
 
-                            <div className='d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2'>
-                                <div className='form-check mt-1'>
-                                    <input type='checkbox' className='form-check-input' id='rememberMe' />
-                                    <label className='form-check-label text-muted' htmlFor='rememberMe'>Remember me</label>
-                                </div>
-                                <a href='#' className='text-success text-decoration-none'>Forgot Password?</a>
+                            <div className='flex justify-between items-center mb-6 flex-wrap gap-2'>
+                                <label className='flex items-center gap-2 text-gray-600 cursor-pointer'>
+                                    <input type='checkbox' className='accent-green-600' />
+                                    Remember me
+                                </label>
+                                <a href='#' className='text-green-600 hover:underline'>Forgot Password?</a>
                             </div>
 
-                            <button type='submit' className='btn btn-success w-100 py-2 fw-semibold mb-3'>
+                            <button type='submit' className='w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition mb-4'>
                                 Login
                             </button>
 
-                            <p className='text-center text-muted mb-0'>
+                            <p className='text-center text-gray-500'>
                                 Don't have an account?
-                                <span className='text-success fw-semibold' style={{ cursor: 'pointer' }} onClick={() => setIsLogin(false)}> Register</span>
+                                <span className='text-green-600 font-semibold cursor-pointer hover:underline ml-1' onClick={() => setIsLogin(false)}>Register</span>
                             </p>
                         </form>
                     ) : (
                         /* Register Form */
                         <form onSubmit={handleRegisterSubmit}>
-                            <p className='text-success text-center mb-1 fs-3 fw-bold'>Create Account</p>
-                            <p className='text-muted text-center mb-4'>Join us for fresh vegetables</p>
+                            <p className='text-green-600 text-center text-2xl font-bold mb-1'>Create Account</p>
+                            <p className='text-gray-500 text-center mb-6'>Join us for fresh vegetables</p>
 
-                            <div className='mb-3 col-md-8'>
-                                <label className='form-label fw-semibold'>Full Name</label>
-
-                                <div className='input-group'>
-                                    <span className='input-group-text bg-success text-white'>
+                            <div className='mb-4'>
+                                <label className='block font-semibold mb-2'>Full Name</label>
+                                <div className='flex'>
+                                    <span className='bg-green-600 text-white px-3 py-2 rounded-l-lg flex items-center'>
                                         <i className="bi bi-person-fill"></i>
                                     </span>
-
-                                    <input type='text' className='form-control' name='name' placeholder='Enter your name'
-                                        value={registerData.name} onChange={handleRegisterChange} required />
+                                    <input 
+                                        type='text' 
+                                        className='flex-1 border border-gray-300 rounded-r-lg px-3 py-2 focus:outline-none focus:border-green-500'
+                                        name='name' 
+                                        placeholder='Enter your name'
+                                        value={registerData.name} 
+                                        onChange={handleRegisterChange} 
+                                        required 
+                                    />
                                 </div>
                             </div>
 
-                            <div className='mb-3 col-md-8'>
-                                <label className='form-label fw-semibold'>Email</label>
-
-                                <div className='input-group'>
-                                    <span className='input-group-text bg-success text-white'>
+                            <div className='mb-4'>
+                                <label className='block font-semibold mb-2'>Email</label>
+                                <div className='flex'>
+                                    <span className='bg-green-600 text-white px-3 py-2 rounded-l-lg flex items-center'>
                                         <i className="bi bi-envelope-fill"></i>
                                     </span>
-
-                                    <input type='email' className='form-control' name='email' placeholder='Enter your email'
-                                        value={registerData.email} onChange={handleRegisterChange} require />
+                                    <input 
+                                        type='email' 
+                                        className='flex-1 border border-gray-300 rounded-r-lg px-3 py-2 focus:outline-none focus:border-green-500'
+                                        name='email' 
+                                        placeholder='Enter your email'
+                                        value={registerData.email} 
+                                        onChange={handleRegisterChange} 
+                                        required 
+                                    />
                                 </div>
                             </div>
 
-                            <div className='mb-3 col-md-8'>
-                                <label className='form-label fw-semibold'>Phone</label>
-
-                                <PhoneInput country={'in'} value={registerData.phone} onChange={handlePhoneChange}
-                                    inputStyle={{ width: '100%', height: '38px', fontSize: '16px', borderRadius: '10px' }}
-                                    containerStyle={{ width: '100%' }} placeholder='Enter your phone' />
+                            <div className='mb-4'>
+                                <label className='block font-semibold mb-2'>Phone</label>
+                                <PhoneInput 
+                                    country={'in'} 
+                                    value={registerData.phone} 
+                                    onChange={handlePhoneChange}
+                                    inputStyle={{ width: '100%', height: '44px', fontSize: '16px', borderRadius: '8px' }}
+                                    containerStyle={{ width: '100%' }} 
+                                    placeholder='Enter your phone' 
+                                />
                             </div>
 
-                            <div className='mb-4 col-md-8'>
-                                <label className='form-label fw-semibold'>Password</label>
-
-                                <div className='input-group'>
-                                    <span className='input-group-text bg-success text-white'>
+                            <div className='mb-6'>
+                                <label className='block font-semibold mb-2'>Password</label>
+                                <div className='flex'>
+                                    <span className='bg-green-600 text-white px-3 py-2 rounded-l-lg flex items-center'>
                                         <i className="bi bi-lock-fill"></i>
                                     </span>
-
-                                    <input type={showPassword ? 'text' : 'password'} className='form-control' name='password' placeholder='Create a password'
-                                        value={registerData.password} onChange={handleRegisterChange} required />
-
-                                    <span className='input-group-text bg-white' style={{ cursor: 'pointer' }} onClick={() => setShowPassword(!showPassword)}>
-                                        <i className={`bi ${showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'} text-secondary`}></i>
+                                    <input 
+                                        type={showPassword ? 'text' : 'password'} 
+                                        className='flex-1 border-y border-gray-300 px-3 py-2 focus:outline-none focus:border-green-500'
+                                        name='password' 
+                                        placeholder='Create a password'
+                                        value={registerData.password} 
+                                        onChange={handleRegisterChange} 
+                                        required 
+                                    />
+                                    <span 
+                                        className='bg-white border border-gray-300 px-3 py-2 rounded-r-lg flex items-center cursor-pointer'
+                                        onClick={() => setShowPassword(!showPassword)}
+                                    >
+                                        <i className={`bi ${showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'} text-gray-500`}></i>
                                     </span>
                                 </div>
                             </div>
 
-                            <button type='submit' className='btn btn-success w-100 py-2 fw-semibold mb-3'>
+                            <button type='submit' className='w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition mb-4'>
                                 Register
                             </button>
 
-                            <p className='text-center text-muted mb-0'>
+                            <p className='text-center text-gray-500'>
                                 Already have an account?
-                                <span className='text-success fw-semibold' style={{ cursor: 'pointer' }} onClick={() => setIsLogin(true)}> Login</span>
+                                <span className='text-green-600 font-semibold cursor-pointer hover:underline ml-1' onClick={() => setIsLogin(true)}>Login</span>
                             </p>
                         </form>
                     )}

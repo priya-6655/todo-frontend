@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import 'react-phone-input-2/lib/style.css'
 import { Provider } from 'react-redux';
 import { store } from './Components/Redux/Store/Store';
+import './index.css'
 
 
 createRoot(document.getElementById('root')).render(

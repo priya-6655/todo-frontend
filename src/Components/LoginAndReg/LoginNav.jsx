@@ -9,26 +9,26 @@ function LoginNav() {
     }
 
     const handlelogout = () => {
-        navigate('/')
+        navigate('/login')
     }
+
     return (
-        <div>
-            <div className='container-fluid py-3' style={{ backgroundColor: "rgba(212, 206, 207, 0.6)" }}>
-                <div className='row align-items-center'>
-                    <div className="col-2 col-md-2 d-flex justify-content-start ps-4">
-                        <img src="https://www.freepnglogos.com/uploads/logo-home-png/photo-icon-home-logo-23.png"
-                            alt="home" className="img-fluid" style={{ width: "50px", height: "40px", cursor: "pointer" }} onClick={backTodo} />
-                    </div>
+        <div className='w-full py-3 px-4 bg-gray-300/60'>
+            <div className='flex items-center justify-between'>
+                <div className='flex justify-start'>
+                    <img src="https://www.freepnglogos.com/uploads/logo-home-png/photo-icon-home-logo-23.png" alt="home"
+                        className="w-12 h-10 object-contain cursor-pointer hover:scale-110 transition-transform" onClick={backTodo} />
+                </div>
 
-                    <div className="col-7 col-md-7 text-center">
-                        <p className="fw-bold m-0 text-dark fs-3">Eagle Web Services</p>
-                    </div>
+                <div className='text-center flex-1'>
+                    <p className="font-bold text-gray-800 text-xl md:text-2xl m-0">Eagle Web Services</p>
+                </div>
 
-                    <div className="col-3 col-md-3 text-end pe-4">
-                        <span style={{ fontSize: "16px", cursor: "pointer" }} className="text-primary" onClick={handlelogout}>
-                            Logout
-                        </span>
-                    </div>
+                <div className='text-right'>
+                    <span className="text-blue-600 cursor-pointer hover:text-blue-800 hover:underline transition-colors font-medium"
+                        onClick={handlelogout}>
+                        Logout
+                    </span>
                 </div>
             </div>
         </div>
@@ -36,5 +36,3 @@ function LoginNav() {
 }
 
 export default LoginNav
-
-

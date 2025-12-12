@@ -2,41 +2,40 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeaderCom from './HeaderCom';
 import LandingFooter from '../LandingPage/LandingFooter';
-import './Bridge.css'
 
 function Bridge() {
     const navigate = useNavigate();
+    const handleNavigate = (path) => navigate(path);
 
-    const handleNavigate = (path) => {
-        navigate(path);
-    };
+    const options = [
+        { label: 'Book Flight', path: '/flight', color: 'bg-blue-600 hover:bg-blue-700' },
+        { label: 'Order Veg & Groceries', path: '/groceries', color: 'bg-green-600 hover:bg-green-700' },
+        { label: 'Shop Dress', path: '/shop-dress', color: 'bg-yellow-500 hover:bg-yellow-600' },
+        { label: 'Todo Creation', path: '/todo', color: 'bg-cyan-500 hover:bg-cyan-600' }
+    ];
 
     return (
-        <>
+        <div className='min-h-screen flex flex-col'>
             <HeaderCom />
-            <div className="container-fluid optionTheme" style={{ textAlign: 'center' }}>
-                <p className='fs-4 fw-bold mt-5 text-decoration-underline mb-5'>Choose an Option</p>
+            
+            <div className='flex-1 bg-gradient-to-b from-indigo-100 to-purple-100 flex flex-col items-center justify-center px-4 py-8'>
+                <p className='text-2xl font-bold underline mb-16 text-gray-800'>Choose an Option</p>
 
-                <div className='row justify-content-center' style={{ marginTop: '150px' }}>
-                    <div className="col-12 col-sm-6 col-md-3 mb-5 d-flex justify-content-center">
-                        <button onClick={() => handleNavigate('/flight')} className="btn btn-primary w-50 rounded-5">Book Flight</button>
-                    </div>
-
-                    <div className="col-12 col-sm-6 col-md-3 mb-5 d-flex justify-content-center ">
-                        <button onClick={() => handleNavigate('/groceries')} className="btn btn-success w-50 rounded-5">Order Veg & Groceries</button>
-                    </div>
-
-                    <div className="col-12 col-sm-6 col-md-3 mb-5 d-flex justify-content-center">
-                        <button onClick={() => handleNavigate('/shop-dress')} className="btn btn-warning w-50 rounded-5">Shop Dress</button>
-                    </div>
-
-                    <div className="col-12 col-sm-6 col-md-3 mb-5 d-flex justify-content-center">
-                        <button onClick={() => handleNavigate('/todo')} className="btn btn-info w-50 rounded-5">Todo Creation</button>
-                    </div>
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-5xl'>
+                    {options.map((opt, idx) => (
+                        <button 
+                            key={idx}
+                            onClick={() => handleNavigate(opt.path)} 
+                            className={`${opt.color} text-white font-semibold py-4 px-6 rounded-full transition shadow-lg hover:shadow-xl`}
+                        >
+                            {opt.label}
+                        </button>
+                    ))}
                 </div>
             </div>
+
             <LandingFooter />
-        </>
+        </div>
     );
 }
 
