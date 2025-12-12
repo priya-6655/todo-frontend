@@ -165,8 +165,8 @@ function MainPage() {
 
                 <form onSubmit={handleTodoSubmit} className='flex flex-col md:flex-row gap-3 justify-center'>
                     <input type='text' id='todoText' placeholder='Type and create your todo list...' value={todo.todoText} onChange={handleChange}
-                        className='flex-1 p-0 rounded-lg outline-none text-base' />
-                    <button type='submit' className='px-6 py-3 bg-green-500/60 hover:bg-green-500/80 rounded-lg font-bold transition'>
+                        className='flex-1 p-2 rounded-lg outline-none text-base' />
+                    <button type='submit' className='px-3 py-2 bg-green-500/60 hover:bg-green-500/80 rounded-lg font-bold transition'>
                         {editIndex ? 'Update' : 'Add'}
                     </button>
                 </form>
