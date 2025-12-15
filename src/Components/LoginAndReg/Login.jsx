@@ -31,7 +31,20 @@ function Login() {
         setRegData({ ...regData, phone: value })
     }
 
+    const emailRegex = /^[a-zA-Z0-9_.-]+@[a-zA-z0-9.-]+\.[a-zA-z]{2,}$/
+
+    const userNameRegex = /^[A-Z][a-z0-9@#_*-]{2,19}$/
+
     const handleRegister = async () => {
+        if (!emailRegex.test(regData.regEmail)) {
+            toast.warning('Please enter a valid email')
+            return
+        }
+
+        if (!userNameRegex.test(regData.regUsername)) {
+            toast.warning('Username must start with an uppercase & include one speacial charecter')
+            return
+        }
         try {
             const res = await fetch(`${API_URL}/register/regUser`, {
                 method: "POST",

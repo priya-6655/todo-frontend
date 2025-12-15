@@ -21,8 +21,13 @@ function EditProfile() {
     useEffect(() => {
         if (userId && token) {
             axios.get(`${API_URL}/register/getuser/${userId}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            }).then(res => setProfile(res.data.data)).catch(err => console.log(err));
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then(res => setProfile(res.data.data))
+                .catch((err) => {
+                    toast.warning(err.response?.data?.message || "You are unauthorized person")
+                });
         }
     }, [userId, token]);
 
@@ -41,12 +46,19 @@ function EditProfile() {
         if (selectFile) formData.append('image', selectFile)
 
         axios.put(`${API_URL}/register/editprofile/${userId}`, formData, {
-            headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}` }
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
         }).then(() => {
             toast.success("Profile updated successfully!")
             setISEditing(false)
-        }).catch(() => {
-            toast.error("Failed to update profile")
+        }).catch((err) => {
+
+            if (err.response?.status === 401 || err.response?.status === 403) {
+                toast.warning(err.response.data.message || "You are unauthorized person")
+            } else {
+                toast.error("Failed to update profile")
+            }
         })
     }
 

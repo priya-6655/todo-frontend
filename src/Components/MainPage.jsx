@@ -26,10 +26,18 @@ function MainPage() {
             if (editIndex) {
                 const res = await fetch(`${API_URL}/todo/edit`, {
                     method: "PUT",
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    },
                     body: JSON.stringify({ id: editIndex, todoText: todo.todoText })
                 })
+
                 const out = await res.json()
+
+                if (!res.ok) {
+                    toast.warning(out.message || "You are unauthorized person")
+                }
                 if (out.success) {
                     toast.success('Todo updated successfully')
                     viewTodo()
@@ -39,10 +47,14 @@ function MainPage() {
             } else {
                 const res = await fetch(`${API_URL}/todo/addtodo`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    },
                     body: JSON.stringify(todo)
                 })
                 const out = await res.json()
+
                 if (out.success) {
                     toast.success('Item added Successfully')
                     setTodo({ todoText: '' })
@@ -60,12 +72,24 @@ function MainPage() {
         setMenuOpen(false)
         try {
             const res = await fetch(`${API_URL}/todo/viewtodo`, {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                }
             })
             const out = await res.json()
+
+            if (!res.ok) {
+                toast.warning(out.message || 'You are not authorizes person')
+                return
+            }
+
             if (out.success) setTodoList(out.data)
-        } catch (error) {
+        }
+
+        catch (error) {
             console.log(error)
+            toast.error("Network error")
         }
     }
 
@@ -74,12 +98,26 @@ function MainPage() {
         updatedList[index].completed = !updatedList[index].completed
         setTodoList(updatedList)
         const todoItem = updatedList[index]
+
         try {
             await fetch(`${API_URL}/todo/completed`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: todoItem.id, completed: todoItem.completed })
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    id: todoItem.id,
+                    completed: todoItem.completed
+                })
+
             })
+
+            if (todoItem.completed) {
+                toast.warning('Your todo task completed')
+            } else {
+                toast.info('Todo marked as incomplete')
+            }
         } catch (error) {
             toast.error('Server Error')
             console.log(error)
@@ -90,12 +128,25 @@ function MainPage() {
         const todoItem = todoList[index]
         setTodo({ todoText: todoItem.todoText })
         setEditIndex(todoItem.id)
+
+        if (todoItem.completed) {
+            toast.warning(`Can't edit task completed!`)
+        }
     }
 
     const deleteTodoList = async (id) => {
         try {
-            const res = await fetch(`${API_URL}/todo/delete/${id}`, { method: 'DELETE' })
+            const res = await fetch(`${API_URL}/todo/delete/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
             const out = await res.json()
+
+            if (!res.ok) {
+                toast.warning(out.message || "You are not authorized person")
+            }
             if (out.success) {
                 toast.success('Todo deleted successfully')
                 viewTodo()
@@ -113,7 +164,9 @@ function MainPage() {
     useEffect(() => {
         if (userID && token) {
             axios.get(`${API_URL}/register/getuser/${userID}`, {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             }).then(res => setProfile(res.data.data)).catch(err => console.log(err))
         }
     }, [userID, token])
