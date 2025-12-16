@@ -1,15 +1,30 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { logoutUsr } from '../Redux/Reducer/VegorderSlice';
+
+const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://todo-backend-1-q0tf.onrender.com';
+
 
 function HeaderCom() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { loginStatus, token } = useSelector(state => state.vegUser)
 
     const backToHome = () => {
         navigate('/')
     }
 
-    const handlelog = () => {
-        navigate('/veglogin')
+    const handlelog = async () => {
+        const res = await fetch(`${API_URL}/orderVeg/logout`, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}` }
+        })
+
+        if (res) {
+            dispatch(logoutUsr())
+            navigate('/veglogin')
+        }
     }
 
     return (
@@ -28,10 +43,16 @@ function HeaderCom() {
 
                 <div className='flex items-center gap-4'>
                     <i className="bi bi-cart3 text-xl text-gray-700 cursor-pointer hover:text-green-600 transition-colors"></i>
-                    <span className="text-blue-600 cursor-pointer hover:text-blue-800 hover:underline transition-colors font-medium"
-                        onClick={handlelog}>
-                        LogIn
-                    </span>
+                    {loginStatus == 1 ? (
+                        <span className="text-blue-600 cursor-pointer hover:text-blue-800 hover:underline transition-colors font-medium"
+                            onClick={handlelog}>
+                            Logout
+                        </span>
+                    ) : (
+                        <span className="text-blue-600 cursor-pointer hover:text-blue-800 hover:underline transition-colors font-medium">
+                            LogIn
+                        </span>
+                    )}
                 </div>
             </div>
         </div>

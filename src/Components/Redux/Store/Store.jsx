@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import storage from 'redux-persist/lib/storage'
 import { userReducer } from "../Reducer/UserSlice";
 import { persistReducer, persistStore } from "redux-persist";
+import { vegUsrReducer } from "../Reducer/VegorderSlice";
 
 
 const persistConfig = {
@@ -11,6 +12,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     user: userReducer,
+    vegUser: vegUsrReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

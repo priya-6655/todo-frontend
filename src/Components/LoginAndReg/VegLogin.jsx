@@ -4,6 +4,8 @@ import LandingFooter from '../LandingPage/LandingFooter'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-phone-input-2/lib/style.css'
+import { useDispatch } from 'react-redux'
+import { setUsr } from '../Redux/Reducer/VegorderSlice'
 
 const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://todo-backend-1-q0tf.onrender.com';
 
@@ -11,9 +13,11 @@ const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://todo-backend-1-q0t
 function VegLogin() {
     const [isLogin, setIsLogin] = useState(true)
     const [loginData, setLoginData] = useState({ email: '', password: '' })
-    const [registerData, setRegisterData] = useState({ name: '', email: '', phone: '', password: '', retypePass: '' })
+    const [registerData, setRegisterData] = useState({ name: '', email: '', phone: '', password: '', retypePass: '', age: '' })
     const [showPassword, setShowPassword] = useState(false)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+
 
     const handleLoginChange = (e) => setLoginData({ ...loginData, [e.target.name]: e.target.value })
     const handleRegisterChange = (e) => setRegisterData({ ...registerData, [e.target.name]: e.target.value })
@@ -21,7 +25,17 @@ function VegLogin() {
 
     const emailRegex = /^[a-zA-z0-9-._]+@+[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/
 
-    const mobileRegex = /^\d{10}$/
+    const mobileRegex = /^\d+$/
+
+    const indianNum = /^(\+91[-\s]?)?[6-9]\d{13}$/
+
+    const handlephoneChange = (e) => {
+        const val = e.target.value
+
+        if (mobileRegex.test(val)) {
+            setRegisterData({ ...registerData, phone: val.slice(0, 13) });
+        }
+    }
 
     const handleLoginSubmit = async (e) => {
         e.preventDefault()
@@ -46,8 +60,12 @@ function VegLogin() {
                 toast.warning(data.message || 'Login failed')
             } else {
                 toast.success('Login Successful!')
-                localStorage.setItem('vegUser', JSON.stringify(data.user))
-                navigate('/vegpage')
+                dispatch(setUsr({
+                    user: data.data.user,
+                    token: data.data.token,
+                    loginStatus: data.data.loginStatus
+                }))
+                navigate('/orderVeg')
             }
         } catch (error) {
             console.error('Login error:', error)
@@ -62,8 +80,8 @@ function VegLogin() {
             return
         }
 
-        if (!mobileRegex.test(registerData.phone)) {
-            toast.warning('Invalid mobile number')
+        if (!indianNum.test(registerData.phone)) {
+            toast.warning('Indian number only allowed!')
             return
         }
 
@@ -78,6 +96,10 @@ function VegLogin() {
 
             const data = await res.json()
 
+            if (registerData.password !== registerData.retypePass) {
+                toast.warning('Password mismatched!')
+            }
+
             if (!res.ok) {
                 toast.warning(data.message)
             } else {
@@ -88,7 +110,8 @@ function VegLogin() {
                     email: '',
                     phone: '',
                     password: '',
-                    retypePass: ''
+                    retypePass: '',
+                    age: ''
                 })
             }
         } catch (error) {
@@ -223,11 +246,23 @@ function VegLogin() {
                                     </span>
                                     <input type='tel' className='flex-1 border border-gray-300 rounded-r-lg px-3 py-2 focus:outline-none focus:border-green-500'
                                         name='phone' placeholder='Enter your phone number' value={registerData.phone}
-                                        onChange={handleRegisterChange} required />
+                                        onChange={handlephoneChange} required maxLength={15} />
 
                                     {/* <PhoneInput country={'in'}  value={registerData.phone}  onChange={handlePhoneChange}
                                     inputStyle={{ width: '100%', height: '44px', fontSize: '16px', borderRadius: '8px' }}
                                     containerStyle={{ width: '100%' }} placeholder='Enter your phone' /> */}
+                                </div>
+                            </div>
+
+                            <div className='mbb-4'>
+                                <label className='block font-semibold mb-2'>Age</label>
+                                <div className='flex'>
+                                    <span className='bg-green-600 text-white px-3 py-2 rounded-l-lg flex items-center'>
+                                        <i className="fa-solid fa-circle-user"></i>
+                                    </span>
+                                    <input type='number' className='flex-1 border border-gray-300 rounded-r-lg px-3 py-2 focus:outline-none focus:border-green-500
+                                    [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' name='age'
+                                        placeholder='Enter your age' onChange={handleRegisterChange} value={registerData.age} required />
                                 </div>
                             </div>
 
