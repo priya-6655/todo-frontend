@@ -16,7 +16,6 @@ function HeaderCom() {
     }
 
     const handlelog = async () => {
-        navigate('/veglogin')
         const res = await fetch(`${API_URL}/orderVeg/logout`, {
             method: 'POST',
             headers: { Authorization: `Bearer ${token}` }
@@ -24,6 +23,8 @@ function HeaderCom() {
 
         if (res) {
             dispatch(logoutUsr())
+        } else {
+            navigate('/veglogin')
         }
     }
 
