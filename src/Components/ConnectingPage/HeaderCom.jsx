@@ -26,7 +26,7 @@ function HeaderCom() {
                 dispatch(logoutUsr())
             }
         } catch (err) {
-            console.err('Logout error', err)
+            console.error('Logout error', err)
         } finally {
             navigate('/veglogin')
         }
@@ -54,7 +54,7 @@ function HeaderCom() {
                             Logout
                         </span>
                     ) : (
-                        <span className="text-blue-600 cursor-pointer hover:text-blue-800 hover:underline transition-colors font-medium">
+                        <span className="text-blue-600 cursor-pointer hover:text-blue-800 hover:underline transition-colors font-medium" onClick={() => navigate('/veglogin')}>
                             LogIn
                         </span>
                     )}
