@@ -16,14 +16,18 @@ function HeaderCom() {
     }
 
     const handlelog = async () => {
-        const res = await fetch(`${API_URL}/orderVeg/logout`, {
-            method: 'POST',
-            headers: { Authorization: `Bearer ${token}` }
-        })
+        try {
+            const res = await fetch(`${API_URL}/orderVeg/logout`, {
+                method: 'POST',
+                headers: { Authorization: `Bearer ${token}` }
+            })
 
-        if (res) {
-            dispatch(logoutUsr())
-        } else {
+            if (res) {
+                dispatch(logoutUsr())
+            }
+        } catch (err) {
+            console.err('Logout error', err)
+        } finally {
             navigate('/veglogin')
         }
     }
