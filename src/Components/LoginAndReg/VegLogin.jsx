@@ -27,7 +27,7 @@ function VegLogin() {
 
     const mobileRegex = /^\d+$/
 
-    const indianNum = /^(\+91[-\s]?)?[6-9]\d{13}$/
+    const indianNum = /^(\+91[-\s]?)?[6-9]\d{9}$/
 
     const handlephoneChange = (e) => {
         const val = e.target.value
