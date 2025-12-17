@@ -46,8 +46,7 @@ function VegPage() {
                                 <p className='text-green-600 font-semibold my-2'>{veg.price}</p>
                                 <button
                                     className='w-full py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition'
-                                    onClick={handleAddToCard}
-                                >
+                                    onClick={handleAddToCard}>
                                     Add to Cart
                                 </button>
                             </div>

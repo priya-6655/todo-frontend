@@ -13,28 +13,62 @@ const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://todo-backend-1-q0t
 function VegLogin() {
     const [isLogin, setIsLogin] = useState(true)
     const [loginData, setLoginData] = useState({ email: '', password: '' })
-    const [registerData, setRegisterData] = useState({ name: '', email: '', phone: '', password: '', retypePass: '', age: '' })
+    const [registerData, setRegisterData] = useState({ name: '', email: '', phone: '+91', password: '', retypePass: '', age: '' })
     const [showPassword, setShowPassword] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
 
     const handleLoginChange = (e) => setLoginData({ ...loginData, [e.target.name]: e.target.value })
-    const handleRegisterChange = (e) => setRegisterData({ ...registerData, [e.target.name]: e.target.value })
+    const handleRegisterChange = (e) => setRegisterData({
+        ...registerData, [e.target.name]: e.target.value
+    })
     // const handlePhoneChange = (value) => setRegisterData({ ...registerData, phone: value })
 
     const emailRegex = /^[a-zA-z0-9-._]+@+[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/
 
-    const mobileRegex = /^\d+$/
 
-    const indianNum = /^(\+91[-\s]?)?[6-9]\d{9}$/
+    const indianNum = /^\+91[6-9]\d{9}$/
+
+    const ageRegex = /^\d*$/
 
     const handlephoneChange = (e) => {
-        const val = e.target.value
+        let val = e.target.value
 
-        if (mobileRegex.test(val)) {
-            setRegisterData({ ...registerData, phone: val.slice(0, 13) });
+        if (!val.startsWith('+91')) {
+            val = '+91'
         }
+
+        const digit = val.replace(/\D/g, '').slice(0, 12)
+
+        setRegisterData({
+            ...registerData,
+            phone: '+' + digit
+        })
+    }
+
+    const handleAgeKeyDown = (e) => {
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+            e.preventDefault()
+            return
+        }
+
+    }
+
+    const handleAgeChange = (e) => {
+        let ageVal = e.target.value
+
+        if (!ageRegex.test(ageVal)) return
+
+        if (ageVal.length > 2) {
+            toast.warning("Invalid age!")
+            return
+        }
+
+        setRegisterData({
+            ...registerData,
+            age: ageVal
+        })
     }
 
     const handleLoginSubmit = async (e) => {
@@ -108,7 +142,7 @@ function VegLogin() {
                 setRegisterData({
                     name: '',
                     email: '',
-                    phone: '',
+                    phone: '+91',
                     password: '',
                     retypePass: '',
                     age: ''
@@ -262,7 +296,8 @@ function VegLogin() {
                                     </span>
                                     <input type='number' className='flex-1 border border-gray-300 rounded-r-lg px-3 py-2 focus:outline-none focus:border-green-500
                                     [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' name='age'
-                                        placeholder='Enter your age' onChange={handleRegisterChange} value={registerData.age} required />
+                                        placeholder='Enter your age' onChange={handleAgeChange} value={registerData.age} required
+                                        onKeyDown={handleAgeKeyDown} />
                                 </div>
                             </div>
 
@@ -311,10 +346,10 @@ function VegLogin() {
                         </form>
                     )}
                 </div>
-            </div>
+            </div >
 
             <LandingFooter />
-        </div>
+        </div >
     )
 }
 
