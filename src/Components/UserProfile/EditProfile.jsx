@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import LandingFooter from '../LandingPage/LandingFooter';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import PhoneInput from 'react-phone-input-2';
 import { useSelector } from 'react-redux';
-import LoginNav from '../LoginAndReg/LoginNav';
-
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://todo-backend-1-q0tf.onrender.com';
+import LoginNav from '../ResuseComponent/LoginNav';
+import profileApi from '../feature/api/profileApi';
 
 function EditProfile() {
     const [profile, setProfile] = useState({
@@ -19,23 +17,24 @@ function EditProfile() {
     const userId = user?.id
 
     useEffect(() => {
-        if (userId && token) {
-            axios.get(`${API_URL}/register/getuser/${userId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }).then(res => setProfile(res.data.data))
-                .catch((err) => {
+        const fetchProfile = async () => {
+            if (userId && token) {
+                try {
+                    const { data } = await profileApi.getProfile(userId, token)
+                    setProfile(data.data)
+                } catch (err) {
                     toast.warning(err.response?.data?.message || "You are unauthorized person")
-                });
+                }
+            }
         }
+        fetchProfile()
     }, [userId, token]);
 
     const handleChange = (e) => setProfile({ ...profile, [e.target.name]: e.target.value });
     const handlephoneChange = (value) => setProfile({ ...profile, phone: value });
     const handleFile = (file) => setSelectFile(file);
 
-    const handleSave = () => {
+    const handleSave = async () => {
         const formData = new FormData()
         formData.append('fname', profile.fname)
         formData.append('lname', profile.lname)
@@ -45,21 +44,21 @@ function EditProfile() {
         formData.append('regEmail', profile.regEmail)
         if (selectFile) formData.append('image', selectFile)
 
-        axios.put(`${API_URL}/register/editprofile/${userId}`, formData, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }).then(() => {
-            toast.success("Profile updated successfully!")
-            setISEditing(false)
-        }).catch((err) => {
+        try {
+            const { response, data } = await profileApi.updateProfile(userId, formData, token)
 
-            if (err.response?.status === 401 || err.response?.status === 403) {
-                toast.warning(err.response.data.message || "You are unauthorized person")
+            if (response.ok) {
+                toast.success("Profile updated successfully!")
+                setISEditing(false)
+            } else if (response.status === 401 || response.status === 403) {
+                toast.warning(data.message || "You are unauthorized person")
             } else {
                 toast.error("Failed to update profile")
             }
-        })
+        } catch (err) {
+            console.log(err)
+            toast.error("Failed to update profile")
+        }
     }
 
     const previewImage = selectFile ? URL.createObjectURL(selectFile) : profile.image
@@ -149,3 +148,4 @@ function EditProfile() {
 }
 
 export default EditProfile;
+

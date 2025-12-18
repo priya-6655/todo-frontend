@@ -1,9 +1,9 @@
 import React from 'react'
-import HeaderCom from '../Components/ConnectingPage/HeaderCom'
-import LandingFooter from '../Components/LandingPage/LandingFooter'
+import HeaderCom from '../ResuseComponent/HeaderCom'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import LandingFooter from '../LandingPage/LandingFooter'
 
 function VegPage() {
     const { token } = useSelector(state => state.user)

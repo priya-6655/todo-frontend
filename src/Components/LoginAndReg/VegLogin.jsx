@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
-import LoginHeader from './LoginHeader'
+import LoginHeader from '../ResuseComponent/LoginHeader'
 import LandingFooter from '../LandingPage/LandingFooter'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-phone-input-2/lib/style.css'
 import { useDispatch } from 'react-redux'
 import { setUsr } from '../Redux/Reducer/VegorderSlice'
-
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://todo-backend-1-q0tf.onrender.com';
+import vegLoginApi from '../feature/api/vegLoginApi'
 
 
 function VegLogin() {
@@ -19,11 +18,14 @@ function VegLogin() {
     const dispatch = useDispatch()
 
 
-    const handleLoginChange = (e) => setLoginData({ ...loginData, [e.target.name]: e.target.value })
+    const handleLoginChange = (e) => setLoginData({
+        ...loginData, [e.target.name]: e.target.value
+    })
+
+
     const handleRegisterChange = (e) => setRegisterData({
         ...registerData, [e.target.name]: e.target.value
     })
-    // const handlePhoneChange = (value) => setRegisterData({ ...registerData, phone: value })
 
     const emailRegex = /^[a-zA-z0-9-._]+@+[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/
 
@@ -31,6 +33,7 @@ function VegLogin() {
     const indianNum = /^\+91[6-9]\d{9}$/
 
     const ageRegex = /^\d*$/
+
 
     const handlephoneChange = (e) => {
         let val = e.target.value
@@ -46,6 +49,7 @@ function VegLogin() {
             phone: '+' + digit
         })
     }
+
 
     const handleAgeKeyDown = (e) => {
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
@@ -80,17 +84,11 @@ function VegLogin() {
         }
 
         try {
-            const res = await fetch(`${API_URL}/orderVeg/vegorderLogin`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(loginData)
-            })
+            const result = await vegLoginApi.vegLogin(loginData)
 
-            const data = await res.json()
+            const { response, data } = result
 
-            if (!res.ok) {
+            if (!response.ok) {
                 toast.warning(data.message || 'Login failed')
             } else {
                 toast.success('Login Successful!')
@@ -120,21 +118,15 @@ function VegLogin() {
         }
 
         try {
-            const res = await fetch(`${API_URL}/orderVeg/vegorderReg`, {
-                method: 'POST',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(registerData)
-            })
-
-            const data = await res.json()
+            const result = await vegLoginApi.vegRegister(registerData)
+            const { response, data } = result
 
             if (registerData.password !== registerData.retypePass) {
                 toast.warning('Password mismatched!')
+                return
             }
 
-            if (!res.ok) {
+            if (!response.ok) {
                 toast.warning(data.message)
             } else {
                 toast.success('Registration successfull!')
@@ -281,10 +273,6 @@ function VegLogin() {
                                     <input type='tel' className='flex-1 border border-gray-300 rounded-r-lg px-3 py-2 focus:outline-none focus:border-green-500'
                                         name='phone' placeholder='Enter your phone number' value={registerData.phone}
                                         onChange={handlephoneChange} required maxLength={15} />
-
-                                    {/* <PhoneInput country={'in'}  value={registerData.phone}  onChange={handlePhoneChange}
-                                    inputStyle={{ width: '100%', height: '44px', fontSize: '16px', borderRadius: '8px' }}
-                                    containerStyle={{ width: '100%' }} placeholder='Enter your phone' /> */}
                                 </div>
                             </div>
 

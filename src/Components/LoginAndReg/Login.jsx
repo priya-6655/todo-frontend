@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
-import LoginHeader from './LoginHeader'
+import LoginHeader from '../ResuseComponent/LoginHeader'
 import { useNavigate } from 'react-router-dom';
 import LandingFooter from '../LandingPage/LandingFooter';
 import { toast } from 'react-toastify';
 import PhoneInput from 'react-phone-input-2';
 import { setUser } from '../Redux/Reducer/UserSlice';
 import { useDispatch } from 'react-redux';
+import { loginApi } from '../feature/api';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://todo-backend-1-q0tf.onrender.com';
+
 
 function Login() {
     const [regBox, setRegBox] = useState(false)
@@ -46,18 +47,15 @@ function Login() {
             return
         }
         try {
-            const res = await fetch(`${API_URL}/register/regUser`, {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(regData)
-            })
-            const data = await res.json()
-            if (!res.ok) {
-                toast.warning(data.message);
-            } else {
+            const result = await loginApi.todoRegister(regData)
+            const out = result.data
+
+            if (out.success) {
                 toast.success('Registration Successful!')
                 setRegBox(false)
                 setRegData({ fname: '', lname: '', gender: '', phone: '', regUsername: '', regEmail: '', regPass: '' });
+            } else {
+                toast.error(out.message || "Register Failed")
             }
         } catch (error) {
             console.error("Error:", error);
@@ -72,18 +70,15 @@ function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch(`${API_URL}/register/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userName: logData.userName, pass: logData.pass })
-            });
-            const data = await res.json();
-            if (!res.ok) {
-                toast.warning(data.message);
-            } else {
+            const result = await loginApi.todoLogin(logData)
+            const out = result.data
+
+            if (out.success) {
                 toast.success("Login Successful!");
-                dispatch(setUser({ user: data.data.user, token: data.data.token }))
+                dispatch(setUser({ user: out.data.user, token: out.data.token }))
                 navigate('/todo')
+            } else {
+                toast.error(out.message || "Failed to login!")
             }
         } catch (error) {
             console.error("Error:", error);
@@ -191,3 +186,4 @@ function Login() {
 }
 
 export default Login
+

@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
-import LandingFooter from './LandingPage/LandingFooter'
-
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://todo-backend-1-q0tf.onrender.com';
+import todoApi from '../feature/api/todoApi'
+import LandingFooter from '../LandingPage/LandingFooter';
 
 function MainPage() {
     const { user, token } = useSelector(state => state.user)
@@ -29,42 +27,25 @@ function MainPage() {
         e.preventDefault();
         try {
             if (editIndex) {
-                const res = await fetch(`${API_URL}/todo/edit`, {
-                    method: "PUT",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ id: editIndex, todoText: todo.todoText })
-                })
+                const { response, data } = await todoApi.updateTodo({ id: editIndex, todoText: todo.todoText }, token)
 
-                const out = await res.json()
-
-                if (!res.ok) {
-                    toast.warning(out.message || "You are unauthorized person")
+                if (!response.ok) {
+                    toast.warning(data.message || "You are unauthorized person")
                 }
-                if (out.success) {
+                if (data.success) {
                     toast.success('Todo updated successfully')
                     viewTodo()
                     setTodo({ todoText: "" })
                     setEditIndex(null)
                 }
             } else {
-                const res = await fetch(`${API_URL}/todo/addtodo`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`
-                    },
-                    body: JSON.stringify(todo)
-                })
-                const out = await res.json()
+                const { data } = await todoApi.addTodo(todo, token)
 
-                if (out.success) {
+                if (data.success) {
                     toast.success('Item added Successfully')
                     setTodo({ todoText: '' })
                 } else {
-                    toast.error(out.message || "Added failed");
+                    toast.error(data.message || "Added failed");
                 }
             }
         } catch (error) {
@@ -76,29 +57,21 @@ function MainPage() {
     const viewTodo = async () => {
         setMenuOpen(false)
         try {
-            const res = await fetch(`${API_URL}/todo/viewtodo`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                }
-            })
-            const out = await res.json()
+            const { response, data } = await todoApi.viewTodo(token)
 
-            if (!res.ok) {
-                toast.warning(out.message || 'You are not authorizes person')
+            if (!response.ok) {
+                toast.warning(data.message || 'You are not authorized person')
                 return
             }
 
-            if (out.success) {
-                setTodoList(out.data)
+            if (data.success) {
+                setTodoList(data.data)
 
                 setTimeout(() => {
                     topOfPage.current?.scrollIntoView({ behavior: "smooth" })
                 }, 100);
             }
-        }
-
-        catch (error) {
+        } catch (error) {
             console.log(error)
             toast.error("Network error")
         }
@@ -111,18 +84,10 @@ function MainPage() {
         const todoItem = updatedList[index]
 
         try {
-            await fetch(`${API_URL}/todo/completed`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    id: todoItem.id,
-                    completed: todoItem.completed
-                })
-
-            })
+            await todoApi.completeTodo({
+                id: todoItem.id,
+                completed: todoItem.completed
+            }, token)
 
             if (todoItem.completed) {
                 toast.warning('Your todo task completed')
@@ -142,23 +107,18 @@ function MainPage() {
 
         if (todoItem.completed) {
             toast.warning(`Can't edit task completed!`)
+            return
         }
     }
 
     const deleteTodoList = async (id) => {
         try {
-            const res = await fetch(`${API_URL}/todo/delete/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            const out = await res.json()
+            const { response, data } = await todoApi.deleteTodo(id, token)
 
-            if (!res.ok) {
-                toast.warning(out.message || "You are not authorized person")
+            if (!response.ok) {
+                toast.warning(data.message || "You are not authorized person")
             }
-            if (out.success) {
+            if (data.success) {
                 toast.success('Todo deleted successfully')
                 viewTodo()
             }
@@ -173,13 +133,17 @@ function MainPage() {
     const userLogout = () => navigate('/login')
 
     useEffect(() => {
-        if (userID && token) {
-            axios.get(`${API_URL}/register/getuser/${userID}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
+        const fetchProfile = async () => {
+            if (userID && token) {
+                try {
+                    const { data } = await todoApi.getUserData(userID, token)
+                    setProfile(data.data)
+                } catch (err) {
+                    console.log(err)
                 }
-            }).then(res => setProfile(res.data.data)).catch(err => console.log(err))
+            }
         }
+        fetchProfile()
     }, [userID, token])
 
     const goToAbout = () => {
@@ -224,17 +188,15 @@ function MainPage() {
         }
 
         try {
-            const res = await axios.post(`${API_URL}/ContactUs/contact`, {
+            const { data } = await todoApi.sendContactMessage({
                 userId: userID,
                 name: contactUs.name,
                 email: contactUs.email,
                 message: contactUs.message
-            }, {
-                headers: { Authorization: `Bearer ${token}` }
-            })
+            }, token)
 
-            if (res.data.success) {
-                toast.success(res.data.message)
+            if (data.success) {
+                toast.success(data.message)
                 setContactUs({
                     name: "",
                     email: "",
@@ -242,7 +204,8 @@ function MainPage() {
                 })
             }
         } catch (error) {
-            toast.error(error.response?.data?.message || "Server Error");
+            console.log(error)
+            toast.error("Server Error");
         }
     }
 
@@ -378,7 +341,7 @@ function MainPage() {
 
                 <div className='mt-[350px] scroll-mt-[140px]' ref={contact}>
                     <h1 className='text-center text-white text-2xl font-bold underline'>Contact Us</h1>
-                    <p className='text-center text-lg font-bold mt-3'>We’d love to hear from you!</p>
+                    <p className='text-center text-lg font-bold mt-3'>We'd love to hear from you!</p>
                     <p className='text-center text-lg font-bold mt-2'>Whether you have a question, feedback, or need support with our services, feel free to reach out. Our team is always ready to help you.</p>
 
                     <div className='grid grid-cols-1 md:grid-cols-2 gap-10 backdrop-blur-md p-8 rounded-2xl shadow-lg'>
