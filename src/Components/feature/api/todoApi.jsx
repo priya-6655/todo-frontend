@@ -62,7 +62,7 @@ const todoApi = {
      * @param {string} token - Authorization token
      */
     async sendContactMessage(contactData, token) {
-        return apiClient.postWithAuth('/ContactUs/contact', contactData, token)
+        return apiClient.postWithAuth('/contactus/contact', contactData, token)
     }
 }
 

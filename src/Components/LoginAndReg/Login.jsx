@@ -74,8 +74,8 @@ function Login() {
             const out = result.data
 
             if (out.success) {
-                toast.success("Login Successful!");
                 dispatch(setUser({ user: out.data.user, token: out.data.token }))
+                toast.success("Login Successful!");
                 navigate('/todo')
             } else {
                 toast.error(out.message || "Failed to login!")
